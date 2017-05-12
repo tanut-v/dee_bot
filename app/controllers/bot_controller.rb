@@ -25,7 +25,7 @@ class BotController < ApplicationController
           case type
           when 'giphy'
             message = {
-              type: 'image',
+              type: 'text',
               text: message
             }
 
