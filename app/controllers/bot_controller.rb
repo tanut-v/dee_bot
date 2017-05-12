@@ -15,7 +15,7 @@ class BotController < ApplicationController
     end
 
     events = client.parse_events_from(body)
-    events.each { |event|
+    events.each do |event|
       case event
       when Line::Bot::Event::Message
         case event.type
@@ -25,8 +25,9 @@ class BotController < ApplicationController
             text: event.message['text']
           }
           client.reply_message(event['replyToken'], message)
+        end
       end
-    }
+    end
 
     render json: {
       result: 'callback response'
