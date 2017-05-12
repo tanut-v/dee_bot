@@ -22,7 +22,7 @@ class BotController < ApplicationController
         when Line::Bot::Event::MessageType::Text
           message = {
             type: 'text',
-            text: event.message
+            text: process_text(event.message['text'])
           }
 
           client.reply_message(event['replyToken'], message)
@@ -42,5 +42,14 @@ class BotController < ApplicationController
       config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
       config.channel_token  = ENV["LINE_CHANNEL_TOKEN"]
     }
+  end
+
+  def process_text(message)
+    if message.start_with?('giphy')
+      message = message.tr('giphy', '').trim
+      giphy = Giphy.search(message)
+
+      JSON.parse(giphy)['data'].first['images']['original']['url']
+    end
   end
 end
