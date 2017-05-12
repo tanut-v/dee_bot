@@ -20,12 +20,17 @@ class BotController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-          message = {
-            type: 'text',
-            text: process_text(event.message['text'])
-          }
+          type, message = process_text(event.message['text'])
 
-          client.reply_message(event['replyToken'], message)
+          case type
+          when 'giphy'
+            message = {
+              type: 'image',
+              originalContentUrl: message
+            }
+
+            client.reply_message(event['replyToken'], message)
+          end
         end
       end
     end
@@ -49,7 +54,7 @@ class BotController < ApplicationController
       message = message.tr('giphy', '').strip
       giphy = Giphy.search(message)
 
-      JSON.parse(giphy)['data'].first['images']['original']['url']
+      ['giphy', JSON.parse(giphy)['data'].first['images']['original']['url']]
     end
   end
 end
