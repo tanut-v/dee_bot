@@ -46,7 +46,7 @@ class BotController < ApplicationController
 
   def process_text(message)
     if message.start_with?('giphy')
-      message = message.tr('giphy', '').trim
+      message = message.tr('giphy', '').strip
       giphy = Giphy.search(message)
 
       JSON.parse(giphy)['data'].first['images']['original']['url']
