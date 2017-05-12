@@ -43,11 +43,4 @@ class BotController < ApplicationController
       config.channel_token  = ENV["LINE_CHANNEL_TOKEN"]
     }
   end
-
-  def process_text(message)
-    if message.start_with?('giphy')
-      message = message.tr('giphy', '').trim
-      Giphy.search(message)['data']['images']['original']['url']
-    end
-  end
 end
