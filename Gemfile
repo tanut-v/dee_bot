@@ -7,6 +7,7 @@ gem 'rails-api'
 
 gem 'spring', :group => :development
 
+# 3rd party API
 gem 'line-bot-api'
 
 group :development  do
