@@ -22,7 +22,7 @@ class BotController < ApplicationController
         when Line::Bot::Event::MessageType::Text
           message = {
             type: 'text',
-            text: process_text(event.message['text'])
+            text: event.message
           }
 
           client.reply_message(event['replyToken'], message)
