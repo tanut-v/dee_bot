@@ -26,7 +26,7 @@ class BotController < ApplicationController
           when 'giphy'
             message = {
               type: 'image',
-              originalContentUrl: message
+              text: message
             }
 
             client.reply_message(event['replyToken'], message)
