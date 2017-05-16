@@ -55,7 +55,7 @@ class BotController < ApplicationController
       message = message.tr('giphy', '').strip
       giphy = Giphy.search(message)
 
-      ['giphy', JSON.parse(giphy)['data'].first['images']['original']['url']]
+      ['giphy', JSON.parse(giphy)['data']['image_url']]
     end
   end
 end
