@@ -50,7 +50,8 @@ class BotController < ApplicationController
   end
 
   def process_text(message)
-    if message.downcase!.start_with?('giphy')
+    message = message.downcase
+    if message.start_with?('giphy')
       message = message.tr('giphy', '').strip
       giphy = Giphy.search(message)
 
