@@ -5,10 +5,14 @@ gem 'rails', '4.2.4'
 
 gem 'rails-api'
 
+
 gem 'spring', :group => :development
 
 # 3rd party API
 gem 'line-bot-api'
+
+# Server
+gem 'puma'
 
 group :development  do
   gem 'pry-rails'
