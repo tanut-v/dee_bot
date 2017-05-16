@@ -3,9 +3,9 @@ require 'net/http'
 class Giphy
 
   def self.search(query)
-    offset = rand(1..25)
+    offset = rand(1..100)
 
-    url = URI.parse("http://api.giphy.com/v1/gifs/search?q=#{query.tr(' ', '+')}&api_key=dc6zaTOxFJmzC&limit=25&offset=#{offset}")
+    url = URI.parse("http://api.giphy.com/v1/gifs/search?q=#{query.tr(' ', '+')}&api_key=dc6zaTOxFJmzC&offset=#{offset}")
     request = Net::HTTP::Get.new(url.to_s)
     response = Net::HTTP.start(url.host, url.port) do |http|
       http.request(request)
