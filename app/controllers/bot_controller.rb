@@ -1,61 +1,41 @@
 class BotController < ApplicationController
+  include LineBotConnectable
 
   def index
-    render json: {
-      result: 'success'
-    }
+    render_success
   end
 
   def callback
-    body = request.body.read
+    reply_token, message = process_event
+    client.reply_message(reply_token, message)
 
-    signature = request.env['HTTP_X_LINE_SIGNATURE']
-    unless client.validate_signature(body, signature)
-      status = :bad_request
-    end
-
-    events = client.parse_events_from(body)
-    events.each do |event|
-      case event
-      when Line::Bot::Event::Message
-        case event.type
-        when Line::Bot::Event::MessageType::Text
-          type, message = process_text(event.message['text'])
-
-          case type
-          when 'giphy'
-            message = {
-              type: 'text',
-              text: message
-            }
-
-            client.reply_message(event['replyToken'], message)
-          end
-        end
-      end
-    end
-
-    render json: {
-      result: 'callback response'
-    }, status: status
+    render_success
   end
 
   private
 
-  def client
-    @client ||= Line::Bot::Client.new { |config|
-      config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
-      config.channel_token  = ENV["LINE_CHANNEL_TOKEN"]
-    }
+  def process_event
+    message_events.each do |event|
+      case event
+      when Line::Bot::Event::Message
+        case event.type
+        when Line::Bot::Event::MessageType::Text
+          gif_url = search_gif(event.message['text'])
+          message = { type: 'text', text: gif_url }
+
+          return [event['replyToken'], message]
+        end
+      end
+    end
   end
 
-  def process_text(message)
+  def search_gif(message)
     message = message.downcase
-    if message.start_with?('giphy')
-      message = message.tr('giphy', '').strip
-      giphy = Giphy.search(message)
+    return unless message.start_with?('giphy')
 
-      ['giphy', JSON.parse(giphy)['data']['image_url']]
-    end
+    message = message.tr('giphy', '').strip
+    giphy = Bot::ExternalServices::Giphy.search(message)
+
+    giphy['data']['image_url']
   end
 end

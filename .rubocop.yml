@@ -1,0 +1,16 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Include:
+    - Rakefile
+    - config.ru
+    - lib/tasks/**/*.rake
+  Exclude:
+    - db/**/*
+    - bin/**/*
+    - node_modules/**/*
+    - config/**/*
+    - client/**/*
+    - opsworks-cookbooks/**/*
+    - spec/factories/**/*
+    - vendor/assets/bower_components/**/*

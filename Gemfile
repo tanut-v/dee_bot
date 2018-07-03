@@ -14,6 +14,8 @@ gem 'line-bot-api'
 # Server
 gem 'puma'
 
+gem 'httparty'
+
 group :development  do
   gem 'pry-rails'
 end
