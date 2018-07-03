@@ -30,11 +30,8 @@ class BotController < ApplicationController
   end
 
   def search_gif(message)
-    message = message.downcase
-    return unless message.start_with?('giphy')
-
-    message = message.tr('giphy', '').strip
-    giphy = Bot::ExternalServices::Giphy.search(message)
+    return unless message.slice!('giphy')
+    giphy = Bot::ExternalServices::Giphy.search(message.strip)
 
     giphy['data']['image_url']
   end
