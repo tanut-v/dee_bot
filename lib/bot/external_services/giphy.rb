@@ -13,7 +13,7 @@ module Bot
         params = "q=#{@query}&api_key=#{@api_key}"
         result = self.class.get("/v1/gifs/search?#{params}")
 
-        result['data'][0]['images']['original']['url']
+        result['data'][0]['images']['original']
       end
     end
   end
