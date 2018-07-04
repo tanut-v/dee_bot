@@ -10,7 +10,7 @@ module Bot
       end
 
       def search
-        params = "q=#{@query}&api_key=#{@api_key}"
+        params = URI.escape("q=#{@query}&api_key=#{@api_key}")
         result = self.class.get("/v1/gifs/search?#{params}")
 
         result['data'][0]['images']['original']
