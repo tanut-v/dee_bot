@@ -4,11 +4,16 @@ module Bot
       include HTTParty
       base_uri 'http://api.giphy.com'
 
-      def self.search(query)
-        query = query.tr(' ', '+')
-        api_key = ENV['GIPHY_API_KEY']
+      def initialize(query)
+        @query   = query.tr(' ', '+')
+        @api_key = ENV['GIPHY_API_KEY']
+      end
 
-        get("/v1/gifs/random?tag=#{query}&api_key=#{api_key}")
+      def search
+        params = "q=#{@query}&api_key=#{@api_key}"
+        result = self.class.get("/v1/gifs/search?#{params}")
+
+        result['data'][0]['images']['original']['url']
       end
     end
   end
