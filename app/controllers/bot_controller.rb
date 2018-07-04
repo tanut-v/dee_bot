@@ -31,7 +31,7 @@ class BotController < ApplicationController
 
   def search_gif(message)
     message = message.downcase
-    return unless message.slice!('giphy')
+    return unless message.slice!('gif')
 
     Bot::ExternalServices::Giphy.new(message.strip).search
   end
