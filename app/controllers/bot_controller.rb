@@ -20,8 +20,8 @@ class BotController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-          gif_url = search_gif(event.message['text'])
-          message = build_reply_message(gif_url)
+          giphy = search_gif(event.message['text'])
+          message = build_reply_message(giphy)
 
           return [event['replyToken'], message]
         end
@@ -36,11 +36,11 @@ class BotController < ApplicationController
     Bot::ExternalServices::Giphy.new(message.strip).search
   end
 
-  def build_reply_message(gif_url)
+  def build_reply_message(giphy)
     {
       type: 'video',
-      originalContentUrl: gif_url['mp4'],
-      previewImageUrl: gif_url['url']
+      originalContentUrl: giphy['mp4'],
+      previewImageUrl: giphy['url']
     }
   end
 end
