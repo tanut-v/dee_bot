@@ -18,7 +18,7 @@ module LineBotConnectable
     @body ||= request.body.read
   end
 
-  def message_events
+  def events
     client.parse_events_from(body)
   end
 
